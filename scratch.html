@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="//kendo.cdn.telerik.com/2016.2.607/styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="//kendo.cdn.telerik.com/2016.2.607/styles/kendo.rtl.min.css" rel="stylesheet" />
+    <link href="//kendo.cdn.telerik.com/2016.2.607/styles/kendo.metro.min.css" rel="stylesheet" />
+    <script src="//code.jquery.com/jquery-1.12.3.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
+
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.js"></script>
+    <script src="//kendo.cdn.telerik.com/2016.2.607/js/jszip.min.js"></script>
+    <script src="//kendo.cdn.telerik.com/2016.2.607/js/kendo.all.min.js"></script>
+    <script src="//kendo.cdn.telerik.com/2016.2.607/js/kendo.timezones.min.js"></script>
+    <script src="nodes.js"></script>
+
+    <!-- handlebars -->
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.0/handlebars.js"></script>
+
+    <!-- alpaca -->
+    <link type="text/css" href="//code.cloudcms.com/alpaca/1.5.17/bootstrap/alpaca.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="//code.cloudcms.com/alpaca/1.5.17/bootstrap/alpaca.min.js"></script>
+
+    <link rel="stylesheet" href="./styles.css" />
+
+    <script type="text/javascript" src="nodes.js"></script>
+    <script type="text/javascript" src="nodes.js"></script>
+
+</head>
+<body>
+<button id="export" type="button" class="btn btn-primary">Primary</button>
+   <div id="diagram"></div>
+   <div id="dialog">
+       <div id="form"></div>
+   </div>
+
+
+</body>
+  <script>
+
+      function onEdit(){
+
+          $("#dialog").kendoWindow({
+              actions: ["Maximize", "Minimize", "Close"],
+              title: "Edit Node",
+              visible: false,
+          }).data("kendoWindow");
+
+          /**
+           * Initial data
+           *
+           * Fill in the JSON data that should be populated into the form.  This can be any JSON data that you'd like
+           * provided that it fits the schema and options (if you provide those).
+           *
+           */
+          var data = {
+              "name": "Inigo Montoya",
+              "age": 29,
+              "phone": "414-111-2222",
+              "country": "usa"
+          };
+
+          /**
+           * JSON-schema for the form
+           *
+           * The form schema defines the data types, validation logic and other constraints that need to be satisfied in
+           * order for the form to be considered valid.
+           *
+           * This should follow the JSON-schema convention.
+           * @see http://json-schema.org
+           *
+           * Full schema settings are listed here:
+           * @see http://www.alpacajs.org
+           *
+           */
+          var schema = {
+              "type": "object",
+              "properties": {
+                  "name": {
+                      "type": "string"
+                  },
+                  "age": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 50
+                  },
+                  "phone": {
+                      "type": "string"
+                  },
+                  "country": {
+                      "type": "string",
+                      "required": true
+                  }
+              }
+          };
+
+          /**
+           * Layout options for the form
+           *
+           * These options describe UI configuration for the controls that are rendered for the data and schema.  You can
+           * tweak the layout and presentation aspects of the form in this section.
+           *
+           * Full options settings are listed here:
+           * @see http://www.alpacajs.org
+           *
+           */
+          var options = {
+              "fields": {
+                  "name": {
+                      "type": "text",
+                      "label": "Name"
+                  },
+                  "age": {
+                      "type": "number",
+                      "label": "Age"
+                  },
+                  "phone": {
+                      "type": "phone",
+                      "label": "Phone"
+                  },
+                  "country": {
+                      "type": "country",
+                      "label": "Country"
+                  }
+              },
+              "form": {
+                  "attributes": {
+                      "method": "POST",
+                      "action": "http://httpbin.org/post",
+                      "enctype": "multipart/form-data"
+                  },
+                  "buttons": {
+                      "submit": {
+                          "value": "Submit the Form"
+                      }
+                  }
+              }
+          };
+
+          /**
+           * This is an optional post render callback that Alpaca will call once the form finishes rendering.  The form
+           * rendering itself is asynchronous as it may load templates or other resources for use in generating the UI.
+           *
+           * Once the render is completed, this callback is fired and the top-level Alpaca control is handed back.
+           *
+           * @param control
+           */
+          var postRenderCallback = function(control) {
+
+          };
+
+          /**
+           * Render the form.
+           *
+           * We call alpaca() with the data, schema and options to tell Alpaca to render into the selected dom element(s).
+           */
+          $("#form").alpaca({
+              "data": data,
+              "schema": schema,
+              "options": options,
+              "postRender": postRenderCallback,
+              //"view": "bootstrap-edit"//,
+              "view": "bootstrap-edit-horizontal"
+          });
+
+          var win = $("#dialog").data("kendoWindow");
+          win.center().open();
+
+      }
+
+      $(document).ready(function() {
+
+          alert(JSON.stringify(Nodes))
+
+//          // add shape
+//          var Point = kendo.dataviz.diagram.Point;
+//          // define this shape corresoponding properties in constructor
+//          var shapeInstance = new kendo.dataviz.diagram.Shape({
+//          fill:{color:'green'},
+//          editable:{
+//              tools:[
+//                  {
+//                      name: "delete"
+//                  },
+//                  { type: "button", text: "Edit", click:onEdit ,icon: "edit"}
+//              ]
+//          },
+//              testProp2 : "testValue2"
+//          })
+//
+//          // methods bind on object
+////          shapeInstance.select = function(){
+////              alert('i am selected');
+////              // this method will be used to redraw the shape
+////              this.redraw({fill:{color:'red'}})
+////
+////          }
+//
+//          shapeInstance.position(new Point(100,220))
+//
+//          // calling diagram api
+//          var diagram = $("#diagram").kendoDiagram({
+//              shapes:[shapeInstance],
+//              shapeDefaults: {
+//                  editable:{
+//                      drag:false
+//                  }
+//              }
+//          }).data("kendoDiagram");
+//
+//          //diagram.addShape(shapeInstance);
+//
+////          var visualTemplate = function(options) {
+////              var dataviz = kendo.dataviz,
+////                      dataItem = options.dataItem;
+////
+////              alert('item' + '--' + JSON.stringify(dataItem))
+////
+////              var g = new dataviz.diagram.Group({
+////                  autoSize: true
+////              });
+////
+////              var r = new dataviz.diagram.Circle({
+////                  width: 100,
+////                  height: 60,
+////                  background: "LimeGreen"
+////              });
+////
+////              g.append(r);
+////
+////              var fn = new dataviz.diagram.TextBlock({
+////                  text: dataItem.name,
+////                  color: "#ffffff",
+////                  fontSize: 16,
+////                  x: 30,
+////                  y: 30
+////              });
+////
+////              g.append(fn);
+////              return g;
+////          };
+////
+////          var diagram = $("#diagram").kendoDiagram({
+////              dataSource: [{
+////                  "name": "Telerik",
+////                  "items": [{
+////                      "name": "Kendo"
+////                  }, {
+////                      "name": "Icenium"
+////                  }]
+////              }],
+////              shapeDefaults: {
+////                  visual: visualTemplate
+////              }
+////          }).data("kendoDiagram");
+////          diagram.layout();
+//
+//
+//
+//          $("#export").on("click", function() {
+//
+//              alert('i am clicked')
+//              var json = JSON.stringify(diagram.save()),
+//                      blob = new Blob([json], {type: "application\/json"});;
+//alert(json)
+//              if (navigator.msSaveBlob) {
+//                  navigator.msSaveBlob(blob, this.getAttribute("download"));
+//              } else {
+//                  this.href = window.URL.createObjectURL(blob);
+//              }
+//          });
+
+
+      });
+
+
+  </script>
+</html>
