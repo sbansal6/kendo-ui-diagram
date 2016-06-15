@@ -437,9 +437,9 @@
         var diagram = $("#diagram").kendoDiagram({
             theme: "default",
             shapeDefaults: {
-                width: 120,
-                height: 120,
-                fill: "#8ebc00"
+//                width: 120,
+//                height: 120,
+//                fill: "#8ebc00"
             },
             layout: {
                 type: "tree",
@@ -637,10 +637,6 @@
             var dataviz = kendo.dataviz;
             var g = new dataviz.diagram.Group({ autoSize: true});
             var dataItem = options.dataItem;
-            var xTb = 5,
-                    yTb, yCon, xShape = 0,
-                    yShape = 5;
-
             g.append(new dataviz.diagram.Rectangle({
                 width: 210,
                 height: 75,
@@ -682,6 +678,62 @@
 
         }
 
+        function getRenderedShape(nodeData){
+            var xTb = 5,
+                yTb,
+                yCon,
+                xShape = 0,
+                yShape = 5;
+            connectors = [];
+            textBoxes = [];
+
+            var image = new kendo.dataviz.diagram.Image({
+                source: nodeData.properties.image,
+                x: 3,
+                y: 3,
+                width: 68,
+                height: 68
+            })
+
+            var tbTable = new kendo.dataviz.diagram.TextBlock({
+                text: nodeData.properties.name,
+                x: 85,
+                y: 20,
+                fontSize: 15,
+                fill: "#000000"
+            })
+
+            var shape = new kendo.dataviz.diagram.Shape({
+                x: nodeData.x,
+                y: nodeData.y,
+                width:210,
+                height:75,
+                stroke: {
+                    width: 0
+                },
+                fill: {
+                    gradient: {
+                        type: "linear",
+                        stops: [{
+                            color: nodeData.properties.color,
+                            offset: 0,
+                            opacity: 0.5
+                        }, {
+                            color: nodeData.properties.color,
+                            offset: 1,
+                            opacity: 1
+                        }]
+                    }
+                }
+            });
+
+
+            shape.visual.append(image)
+            shape.visual.append(tbTable)
+
+            return shape
+        }
+
         // create and add shape on drop from palette s
         // get node data,schema and options from node
         $("#diagram").kendoDropTarget({
@@ -691,26 +743,30 @@
                 var transformed = diagram.documentToModel(pos);
                 var draggedNodeName = e.draggable.hint.data("shape");
                 var nodeData = getNodeData(draggedNodeName);
-                var shapeInstance = new kendo.dataviz.diagram.Shape({
-                    x:transformed.x,
-                    y:transformed.y,
-                    fill:{color:'green'},
-                    editable:{
-                        tools:[
-                            {
-                              name: "delete"
-                            },
-                            { type: "button", text: "Edit", click:onEdit ,icon: "edit"}
-                        ]
-                    },
-                    properties:nodeData.properties,
-                    data:nodeData.data,
-                    schema : nodeData.schema,
-                    options : nodeData.options,
-                    visual: visualTemplate
-                })
+                nodeData.x = transformed.x
+                nodeData.y = transformed.y
+                var rendered = getRenderedShape(nodeData)
 
-                diagram.addShape(shapeInstance)
+//                var shapeInstance = new kendo.dataviz.diagram.Shape({
+//                    x:transformed.x,
+//                    y:transformed.y,
+//                    fill:{color:'green'},
+//                    editable:{
+//                        tools:[
+//                            {
+//                              name: "delete"
+//                            },
+//                            { type: "button", text: "Edit", click:onEdit ,icon: "edit"}
+//                        ]
+//                    },
+//                    properties:nodeData.properties,
+//                    data:nodeData.data,
+//                    schema : nodeData.schema,
+//                    options : nodeData.options,
+//                    visual: visualTemplate
+//                })
+
+                diagram.addShape(rendered)
             }
         });
 
