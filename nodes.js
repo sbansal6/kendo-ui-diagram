@@ -26,7 +26,7 @@ var Nodes  = (function(){
             y:null,
             height:null,
             width:null,
-            fields : []
+            fields : ["col1","col2"]
         }
         this.data = {}
         this.schema = {}

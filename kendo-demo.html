@@ -635,8 +635,11 @@
 
         function visualTemplate(options){
             var dataviz = kendo.dataviz;
-            var g = new dataviz.diagram.Group();
+            var g = new dataviz.diagram.Group({ autoSize: true});
             var dataItem = options.dataItem;
+            var xTb = 5,
+                    yTb, yCon, xShape = 0,
+                    yShape = 5;
 
             g.append(new dataviz.diagram.Rectangle({
                 width: 210,
@@ -664,7 +667,7 @@
                 text: options.properties.name,
                 x: 85,
                 y: 20,
-                fill: "#fff"
+                fill: "#1696d3"
             }));
 
             g.append(new dataviz.diagram.Image({
@@ -674,11 +677,6 @@
                 width: 68,
                 height: 68
             }));
-
-            // Add fields
-            if (options.properties.fields > 0) {
-
-            }
 
             return g;
 
