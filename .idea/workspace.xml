@@ -26,8 +26,8 @@
       <file leaf-file-name="kendo-demo.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/kendo-demo.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="686" column="28" selection-start-line="686" selection-start-column="28" selection-end-line="686" selection-end-column="28" />
+            <state relative-caret-position="1120">
+              <caret line="888" column="30" selection-start-line="888" selection-start-column="30" selection-end-line="888" selection-end-column="30" />
               <folding>
                 <element signature="n#style#0;n#iframe#0;n#noscript#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="false" />
@@ -73,7 +73,8 @@
                 <element signature="e#22768#22959#0" expanded="false" />
                 <element signature="e#22990#23280#0" expanded="false" />
                 <element signature="e#23425#24729#0" expanded="false" />
-                <element signature="e#26316#26362#0" expanded="false" />
+                <element signature="e#24774#27457#0" expanded="false" />
+                <element signature="e#31386#31432#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -208,6 +209,16 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="telerik.kendoui.professional.2016.2.607.trial" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="kendo-ui-diagram" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -295,18 +306,18 @@
       <updated>1465576397072</updated>
       <workItem from="1465833974007" duration="25998000" />
       <workItem from="1465944195451" duration="4843000" />
-      <workItem from="1466011598429" duration="5284000" />
+      <workItem from="1466011598429" duration="10505000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="36125000" />
+    <option name="totallyTimeSpent" value="41346000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="23" width="1080" height="1897" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.0094428705" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.028328612" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -442,7 +453,8 @@
             <element signature="e#22768#22959#0" expanded="false" />
             <element signature="e#22990#23280#0" expanded="false" />
             <element signature="e#23425#24729#0" expanded="false" />
-            <element signature="e#26316#26362#0" expanded="false" />
+            <element signature="e#24774#27457#0" expanded="false" />
+            <element signature="e#31386#31432#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -538,7 +550,8 @@
             <element signature="e#22768#22959#0" expanded="false" />
             <element signature="e#22990#23280#0" expanded="false" />
             <element signature="e#23425#24729#0" expanded="false" />
-            <element signature="e#26316#26362#0" expanded="false" />
+            <element signature="e#24774#27457#0" expanded="false" />
+            <element signature="e#31386#31432#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -660,7 +673,8 @@
             <element signature="e#22768#22959#0" expanded="false" />
             <element signature="e#22990#23280#0" expanded="false" />
             <element signature="e#23425#24729#0" expanded="false" />
-            <element signature="e#26316#26362#0" expanded="false" />
+            <element signature="e#24774#27457#0" expanded="false" />
+            <element signature="e#31386#31432#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -726,7 +740,8 @@
             <element signature="e#22768#22959#0" expanded="false" />
             <element signature="e#22990#23280#0" expanded="false" />
             <element signature="e#23425#24729#0" expanded="false" />
-            <element signature="e#26316#26362#0" expanded="false" />
+            <element signature="e#24774#27457#0" expanded="false" />
+            <element signature="e#31386#31432#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -989,8 +1004,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/kendo-demo.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="686" column="28" selection-start-line="686" selection-start-column="28" selection-end-line="686" selection-end-column="28" />
+        <state relative-caret-position="1120">
+          <caret line="888" column="30" selection-start-line="888" selection-start-column="30" selection-end-line="888" selection-end-column="30" />
           <folding>
             <element signature="n#style#0;n#iframe#0;n#noscript#0;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="false" />
@@ -1036,7 +1051,8 @@
             <element signature="e#22768#22959#0" expanded="false" />
             <element signature="e#22990#23280#0" expanded="false" />
             <element signature="e#23425#24729#0" expanded="false" />
-            <element signature="e#26316#26362#0" expanded="false" />
+            <element signature="e#24774#27457#0" expanded="false" />
+            <element signature="e#31386#31432#0" expanded="false" />
           </folding>
         </state>
       </provider>

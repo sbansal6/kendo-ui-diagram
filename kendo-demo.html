@@ -679,35 +679,64 @@
         }
 
         function getRenderedShape(nodeData){
-            var xTb = 5,
-                yTb,
-                yCon,
-                xShape = 0,
-                yShape = 5;
-            connectors = [];
-            textBoxes = [];
+            var shapeX = nodeData.x
+            var shapeY = nodeData.y
+            var shapeWidth = 200;
+            var shapeHeight = 60;
+
+            console.log('shapeX',shapeX)
+            console.log('shapeX',shapeY)
 
             var image = new kendo.dataviz.diagram.Image({
                 source: nodeData.properties.image,
-                x: 3,
-                y: 3,
-                width: 68,
-                height: 68
+                x:5,
+                y:5,
+                width: 50,
+                height: 50,
+//                position: function(shape){
+//                    var bounds = shape.bounds();
+//                    var boundRight = bounds.right();
+//                    var boundLeft = bounds.left();
+//                    return shape._transformPoint(new kendo.dataviz.diagram.Point(boundLeft.x,boundLeft.y))
+//                }
             })
 
             var tbTable = new kendo.dataviz.diagram.TextBlock({
                 text: nodeData.properties.name,
-                x: 85,
-                y: 20,
+                x: 2 + 60 + 30,
+                y: 22,
                 fontSize: 15,
                 fill: "#000000"
             })
 
+            var tbTable2 = new kendo.dataviz.diagram.TextBlock({
+                text: 'col1',
+                x: 5,
+                y: 60,
+                fontSize: 15,
+                fill: "#000000"
+            })
+
+
+//            var connector = {
+//                name: "conn1",
+//                position : function(shape){
+//                    var bounds = shape.bounds();
+//                    var p = bounds.right();
+//                    console.log(p.x,bounds.x,bounds.y)
+//                    return shape._transformPoint(new kendo.dataviz.diagram.Point(p.x, bounds.y + 70));
+//                    }
+//
+//            }
+//
+//            connectors.push(connector)
+
             var shape = new kendo.dataviz.diagram.Shape({
-                x: nodeData.x,
-                y: nodeData.y,
-                width:210,
-                height:75,
+                x: shapeX,
+                y: shapeY,
+                width:shapeWidth,
+                height:shapeHeight,
+              //  connectors:connectors,
                 stroke: {
                     width: 0
                 },
@@ -730,8 +759,123 @@
 
             shape.visual.append(image)
             shape.visual.append(tbTable)
+            shape.visual.append(tbTable2)
 
             return shape
+        }
+
+        function getRenderedShapeExample(nodeData){
+            // x co-ordinate of table
+            var xTb = 5
+            // y co-ordinate of table
+            var yTb = 0
+
+            // y co-ordinate of connection
+            var yCon = 32
+
+            // x co-ordinate of shape
+            var xShape = nodeData.x
+            // y co-ordinate of shape
+            var yShape = nodeData.y;
+
+            var connectorsPositions = [];
+            var connectors;
+            var textBoxes;
+
+            connectors = [];
+            textBoxes = [];
+
+            //Table name textbox
+            var tbTable = new kendo.dataviz.diagram.TextBlock({
+                text: nodeData.properties.name,
+                x: xTb,
+                y: 0,
+                fontSize: 15,
+                color: '#428bca'
+            });
+            textBoxes.push(tbTable);
+
+            for (var j = 0; j < node.properties.fields.length; j++) {
+
+                    //Connectors
+                    connectorsPositions[node.properties.fields[j]] = yCon;
+                    var connector = {
+                        name: node.properties.fields[j],
+                        position: function(shape) {
+                            var bounds = shape.bounds();
+                            var p = bounds.right();
+                            return shape._transformPoint(new kendo.dataviz.diagram.Point(p.x, bounds.y + connectorsPositions[this.name]));
+                        }
+                    };
+
+                    connectors.push(connector);
+
+                    //Fields
+                    yTb += 25;
+
+                    var tb = new kendo.dataviz.diagram.TextBlock({
+                        text: node.properties.fields[j],
+                        height: 13,
+                        x: xTb,
+                        y: yTb,
+                        fontSize: 13
+                    });               textBoxes.push(tb);
+
+                    yCon += 25;
+
+            }
+
+                var rectangle = new kendo.dataviz.diagram.Rectangle({
+                                width: 101,
+                                height: 83,
+                                stroke: {
+                                    width: 0
+                                },
+                                fill: {
+                                    gradient: {
+                                        type: "linear",
+                                        stops: [{
+                                            color: node.properties.color,
+                                            offset: 0,
+                                            opacity: 0.5
+                                        }, {
+                                            color: node.properties.color,
+                                            offset: 1,
+                                            opacity: 1
+                                        }]
+                                    }
+                                }
+                            })
+
+
+               var shape = new kendo.dataviz.diagram.Shape({
+                id: nodeData.properties.name,
+                x: xShape,
+                y: yShape,
+                connectors: connectors,
+                height: yCon,
+                   editable:{
+                       tools:[
+                           {
+                               name: "delete"
+                           },
+                           { type: "button", text: "Edit", click:onEdit ,icon: "edit"}
+                       ]
+                   },
+                   properties:node.properties,
+                   data:node.data,
+                   schema : node.schema,
+                   options : node.options,
+            });
+
+            shape.visual.append(rectangle);
+
+            for (var j = 0; j < textBoxes.length; j++) {
+                shape.visual.append(textBoxes[j]);
+            }
+
+            return shape
+
         }
 
         // create and add shape on drop from palette s
@@ -745,8 +889,9 @@
                 var nodeData = getNodeData(draggedNodeName);
                 nodeData.x = transformed.x
                 nodeData.y = transformed.y
-                var rendered = getRenderedShape(nodeData)
-
+                alert(nodeData.x + '--' + nodeData.y)
+                var rendered = getRenderedShapeExample(nodeData)
+//
 //                var shapeInstance = new kendo.dataviz.diagram.Shape({
 //                    x:transformed.x,
 //                    y:transformed.y,
@@ -765,7 +910,10 @@
 //                    options : nodeData.options,
 //                    visual: visualTemplate
 //                })
-
+                 console.log('bounds',rendered.bounds())
+                 console.log('bounds right',rendered.bounds().right())
+                 console.log('bounds y',rendered.bounds().y)
+                //alert(rendered.bounds().left());
                 diagram.addShape(rendered)
             }
         });
