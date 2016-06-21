@@ -26,12 +26,13 @@ var Nodes  = (function(){
             y:null,
             height:null,
             width:null,
-            fields : ["col1","col2"]
+            fields : []
         }
         this.data = {}
         this.schema = {}
         this.options = {}
     }
+
 
     var FileSource = new Component(CATEGORY.Source,SHAPE.Rectangle);
     FileSource.properties.name = 'FileSource';
@@ -60,6 +61,7 @@ var Nodes  = (function(){
         "fields":{
             "selectFile": {
                 "type": "file"
+
             },
             "type":{
                 "removeDefaultNone":true
@@ -68,15 +70,37 @@ var Nodes  = (function(){
         "form": {
             "attributes": {
                 "method": "POST",
-                "action": "http://localhost:3001/upload",
-                "enctype": "multipart/form-data"
+                "action": "http://localhost:3001/upload"
             },
             "buttons": {
                 "submit": {
-                    "value": "Submit the Form"
+                    "value": "Submit the Form",
+                    "click": function(){
+                        // this has all the values, use this to update data object or any other object on save.
+                        var val = this.getValue();
+                        var form = $('#alpaca2')
+                        form.ajaxSubmit({
+                            error: function(xhr) {
+                                status('Error: ' + xhr.status);
+                            },
+                            success: function(response) {
+                                $("#status").empty().text(response);
+                                alert(JSON.stringify(response));
+                                var selected = $("#diagram").getKendoDiagram().select();
+                                var nodeById = getNodeById(selected);
+                                alert(nodeById)
+                                $("#dialog").data("kendoWindow").close();
+                            }
+                        });
+                        return false;
+
+                    }
                 }
+
+
             }
         }
+
     }
 
     var Google = new Component(CATEGORY.Destination,SHAPE.Rectangle);
@@ -85,6 +109,7 @@ var Nodes  = (function(){
     Google.properties.height = 60;
     Google.properties.width = 60;
     Google.properties.color = "#ef6944";
+    Google.properties.fields = ['Product Id','Name','Desc']
 
     var Replace = new Component(CATEGORY.Transformation,SHAPE.Rectangle);
     Replace.properties.name = 'Replace';

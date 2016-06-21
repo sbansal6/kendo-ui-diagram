@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="//kendo.cdn.telerik.com/2016.2.607/styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="//kendo.cdn.telerik.com/2016.2.607/styles/kendo.rtl.min.css" rel="stylesheet" />
+    <link href="//kendo.cdn.telerik.com/2016.2.607/styles/kendo.metro.min.css" rel="stylesheet" />
+    <script src="//code.jquery.com/jquery-1.12.3.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.js"></script>
+    <script src="//kendo.cdn.telerik.com/2016.2.607/js/jszip.min.js"></script>
+    <script src="//kendo.cdn.telerik.com/2016.2.607/js/kendo.all.min.js"></script>
+    <script src="//kendo.cdn.telerik.com/2016.2.607/js/kendo.timezones.min.js"></script>
+    <script src="nodes.js"></script>
+
+    <!-- handlebars -->
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.0/handlebars.js"></script>
+
+    <!-- alpaca -->
+    <link type="text/css" href="//code.cloudcms.com/alpaca/1.5.17/bootstrap/alpaca.min.css" rel="stylesheet" />
+    <script type="text/javascript" src="//code.cloudcms.com/alpaca/1.5.17/bootstrap/alpaca.min.js"></script>
+
+    <link rel="stylesheet" href="./styles.css" />
+
+    <script type="text/javascript" src="./nodes.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+
+</head>
+<body>
+<div id="field1"></div>
+<button type="button" class="btn btn-primary start">
+    <i class="glyphicon glyphicon-upload"></i>
+    <span>Start upload</span>
+</button>
+
+</body>
+<script>
+    $("#field1").alpaca({
+        "data": {
+            "token": "2b669c33081677da09c2"
+        },
+        "options": {
+            "form": {
+                "attributes": {
+                    "action": "http://localhost:3001/upload",
+                    "method": "post"
+                },
+                "buttons": {
+                    "submit": {
+                        "title": "seeend",
+                        "fieldClass": "sss"
+                    }
+                }
+            },
+            "fields": {
+                "fieldFile": {
+                    "type": "file",
+                    "label": "Ice Cream Photo:",
+                    "helper": "Pick your favorite ice cream picture."
+                },
+                "token": {
+                    "type": "hidden"
+                }
+            }
+        },
+        "schema": {
+            "type": "object",
+            "properties": {
+                "fieldFile": {
+                    "type": "string",
+                    "format": "uri"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        }
+    });
+
+
+    $("#field1").fileupload({
+        // Uncomment the following to send cross-domain cookies:
+        //xhrFields: {withCredentials: true},
+        url: 'http://localhost:3001/upload'
+    });
+
+</script>
+</html>

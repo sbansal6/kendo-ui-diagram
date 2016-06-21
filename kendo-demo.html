@@ -27,6 +27,8 @@
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+
 </head>
 <body>
 <!-- Google Tag Manager -->
@@ -602,17 +604,6 @@
                 visible: false,
             }).data("kendoWindow");
 
-            /**
-             * This is an optional post render callback that Alpaca will call once the form finishes rendering.  The form
-             * rendering itself is asynchronous as it may load templates or other resources for use in generating the UI.
-             *
-             * Once the render is completed, this callback is fired and the top-level Alpaca control is handed back.
-             *
-             * @param control
-             */
-            var postRenderCallback = function(control) {
-
-            };
 
             /**
              * Render the form.
@@ -623,9 +614,6 @@
                 "data": nodeById.data,
                 "schema": nodeById.schema,
                 "options": nodeById.options,
-                "postRender": postRenderCallback,
-                //"view": "bootstrap-edit"//,
-                "view": "bootstrap-edit-horizontal"
             });
 
             var win = $("#dialog").data("kendoWindow");
@@ -633,138 +621,8 @@
 
         }
 
-        function visualTemplate(options){
-            var dataviz = kendo.dataviz;
-            var g = new dataviz.diagram.Group({ autoSize: true});
-            var dataItem = options.dataItem;
-            g.append(new dataviz.diagram.Rectangle({
-                width: 210,
-                height: 75,
-                stroke: {
-                    width: 0
-                },
-                fill: {
-                    gradient: {
-                        type: "linear",
-                        stops: [{
-                            color: options.properties.color,
-                            offset: 0,
-                            opacity: 0.5
-                        }, {
-                            color: options.properties.color,
-                            offset: 1,
-                            opacity: 1
-                        }]
-                    }
-                }
-            }));
-
-            g.append(new dataviz.diagram.TextBlock({
-                text: options.properties.name,
-                x: 85,
-                y: 20,
-                fill: "#1696d3"
-            }));
-
-            g.append(new dataviz.diagram.Image({
-                source: options.properties.image,
-                x: 3,
-                y: 3,
-                width: 68,
-                height: 68
-            }));
-
-            return g;
-
-        }
-
-        function getRenderedShape(nodeData){
-            var shapeX = nodeData.x
-            var shapeY = nodeData.y
-            var shapeWidth = 200;
-            var shapeHeight = 60;
-
-            console.log('shapeX',shapeX)
-            console.log('shapeX',shapeY)
-
-            var image = new kendo.dataviz.diagram.Image({
-                source: nodeData.properties.image,
-                x:5,
-                y:5,
-                width: 50,
-                height: 50,
-//                position: function(shape){
-//                    var bounds = shape.bounds();
-//                    var boundRight = bounds.right();
-//                    var boundLeft = bounds.left();
-//                    return shape._transformPoint(new kendo.dataviz.diagram.Point(boundLeft.x,boundLeft.y))
-//                }
-            })
-
-            var tbTable = new kendo.dataviz.diagram.TextBlock({
-                text: nodeData.properties.name,
-                x: 2 + 60 + 30,
-                y: 22,
-                fontSize: 15,
-                fill: "#000000"
-            })
-
-            var tbTable2 = new kendo.dataviz.diagram.TextBlock({
-                text: 'col1',
-                x: 5,
-                y: 60,
-                fontSize: 15,
-                fill: "#000000"
-            })
-
-
-//            var connector = {
-//                name: "conn1",
-//                position : function(shape){
-//                    var bounds = shape.bounds();
-//                    var p = bounds.right();
-//                    console.log(p.x,bounds.x,bounds.y)
-//                    return shape._transformPoint(new kendo.dataviz.diagram.Point(p.x, bounds.y + 70));
-//                    }
-//
-//            }
-//
-//            connectors.push(connector)
-
-            var shape = new kendo.dataviz.diagram.Shape({
-                x: shapeX,
-                y: shapeY,
-                width:shapeWidth,
-                height:shapeHeight,
-              //  connectors:connectors,
-                stroke: {
-                    width: 0
-                },
-                fill: {
-                    gradient: {
-                        type: "linear",
-                        stops: [{
-                            color: nodeData.properties.color,
-                            offset: 0,
-                            opacity: 0.5
-                        }, {
-                            color: nodeData.properties.color,
-                            offset: 1,
-                            opacity: 1
-                        }]
-                    }
-                }
-            });
-
-
-            shape.visual.append(image)
-            shape.visual.append(tbTable)
-            shape.visual.append(tbTable2)
-
-            return shape
-        }
-
         function getRenderedShapeExample(nodeData){
+
             // x co-ordinate of table
             var xTb = 5
             // y co-ordinate of table
@@ -795,15 +653,23 @@
             });
             textBoxes.push(tbTable);
 
-            for (var j = 0; j < node.properties.fields.length; j++) {
+            // Add Fields if exists
+            if(nodeData.properties.fields.length > 0) {
+                for (var j = 0; j < nodeData.properties.fields.length; j++) {
 
                     //Connectors
-                    connectorsPositions[node.properties.fields[j]] = yCon;
+                    connectorsPositions[nodeData.properties.fields[j]] = yCon;
                     var connector = {
-                        name: node.properties.fields[j],
-                        position: function(shape) {
+                        name: nodeData.properties.fields[j],
+                        position: function (shape) {
                             var bounds = shape.bounds();
-                            var p = bounds.right();
+                            var p;
+                            if (nodeData.properties.category == 'Source'){
+                                p = bounds.right();
+                            }
+                            if (nodeData.properties.category == 'Destination'){
+                                p = bounds.left();
+                            }
                             return shape._transformPoint(new kendo.dataviz.diagram.Point(p.x, bounds.y + connectorsPositions[this.name]));
                         }
                     };
@@ -814,18 +680,20 @@
                     yTb += 25;
 
                     var tb = new kendo.dataviz.diagram.TextBlock({
-                        text: node.properties.fields[j],
+                        text: nodeData.properties.fields[j],
                         height: 13,
                         x: xTb,
                         y: yTb,
                         fontSize: 13
-                    });               textBoxes.push(tb);
+                    });
+                    textBoxes.push(tb);
 
                     yCon += 25;
 
+                }
             }
 
-                var rectangle = new kendo.dataviz.diagram.Rectangle({
+            var rectangle = new kendo.dataviz.diagram.Rectangle({
                                 width: 101,
                                 height: 83,
                                 stroke: {
@@ -848,7 +716,7 @@
                             })
 
 
-               var shape = new kendo.dataviz.diagram.Shape({
+            var shape = new kendo.dataviz.diagram.Shape({
                 id: nodeData.properties.name,
                 x: xShape,
                 y: yShape,
@@ -862,10 +730,10 @@
                            { type: "button", text: "Edit", click:onEdit ,icon: "edit"}
                        ]
                    },
-                   properties:node.properties,
-                   data:node.data,
-                   schema : node.schema,
-                   options : node.options,
+                   properties:nodeData.properties,
+                   data:nodeData.data,
+                   schema : nodeData.schema,
+                   options : nodeData.options,
             });
 
             shape.visual.append(rectangle);
@@ -889,31 +757,7 @@
                 var nodeData = getNodeData(draggedNodeName);
                 nodeData.x = transformed.x
                 nodeData.y = transformed.y
-                alert(nodeData.x + '--' + nodeData.y)
                 var rendered = getRenderedShapeExample(nodeData)
-//
-//                var shapeInstance = new kendo.dataviz.diagram.Shape({
-//                    x:transformed.x,
-//                    y:transformed.y,
-//                    fill:{color:'green'},
-//                    editable:{
-//                        tools:[
-//                            {
-//                              name: "delete"
-//                            },
-//                            { type: "button", text: "Edit", click:onEdit ,icon: "edit"}
-//                        ]
-//                    },
-//                    properties:nodeData.properties,
-//                    data:nodeData.data,
-//                    schema : nodeData.schema,
-//                    options : nodeData.options,
-//                    visual: visualTemplate
-//                })
-                 console.log('bounds',rendered.bounds())
-                 console.log('bounds right',rendered.bounds().right())
-                 console.log('bounds y',rendered.bounds().y)
-                //alert(rendered.bounds().left());
                 diagram.addShape(rendered)
             }
         });
@@ -923,5 +767,8 @@
     });
 
 </script>
+
+
+
 </body>
 </html>
